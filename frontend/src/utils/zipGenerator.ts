@@ -1,7 +1,108 @@
 import JSZip from 'jszip';
 import { PortfolioData } from '../context/store';
-import { getTemplateSource } from '../templates/registry';
 import axios from 'axios';
+
+// Import template source files as raw text using Vite's ?raw import syntax
+import developerTemplatesRaw from '../templates/developerTemplates.tsx?raw';
+import securityTemplatesRaw from '../templates/securityTemplates.tsx?raw';
+import studentTemplatesRaw from '../templates/studentTemplates.tsx?raw';
+import designerTemplatesRaw from '../templates/designerTemplates.tsx?raw';
+import corporateTemplatesRaw from '../templates/corporateTemplates.tsx?raw';
+import freelancerTemplatesRaw from '../templates/freelancerTemplates.tsx?raw';
+import registryRaw from '../templates/registry.ts?raw';
+import rendererCodeRaw from '../templates/rendererCode.ts?raw';
+
+const storeTypes = `
+export interface PersonalInfo {
+  fullName: string;
+  email: string;
+  phone: string;
+  location: string;
+  bio: string;
+  avatarUrl: string;
+}
+
+export interface Socials {
+  github: string;
+  linkedin: string;
+  portfolio: string;
+  twitter: string;
+}
+
+export interface Education {
+  degree: string;
+  college: string;
+  year: string;
+  grade: string;
+}
+
+export interface Experience {
+  company: string;
+  role: string;
+  duration: string;
+  description: string;
+}
+
+export interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  githubLink: string;
+  liveLink: string;
+}
+
+export interface Skill {
+  name: string;
+  category: 'technical' | 'soft';
+  level: number;
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  date: string;
+  url: string;
+}
+
+export interface Achievement {
+  title: string;
+  description: string;
+  date: string;
+}
+
+export interface ThemeConfig {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  fontFamily: string;
+  borderRadius: string;
+}
+
+export interface SeoConfig {
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+}
+
+export interface PortfolioData {
+  id?: string;
+  title: string;
+  slug: string;
+  templateId: string;
+  personalInfo: PersonalInfo;
+  socials: Socials;
+  education: Education[];
+  experience: Experience[];
+  projects: Project[];
+  skills: Skill[];
+  certifications: Certification[];
+  achievements: Achievement[];
+  themeConfig: ThemeConfig;
+  sectionsOrder: string[];
+  seoConfig: SeoConfig;
+}
+`;
 
 export async function generatePortfolioZip(portfolioData: PortfolioData): Promise<Blob> {
   // Safe JSZip constructor instantiation handling both ESM and CommonJS structures in Vite
@@ -173,9 +274,41 @@ body {
 }
 `);
 
-    // Dynamic compilation of template code
-    const appCode = getTemplateSource(portfolioData.templateId);
-    srcFolder.file('App.tsx', appCode);
+    // Write context folder and mock store
+    const contextFolder = srcFolder.folder('context');
+    if (contextFolder) {
+      contextFolder.file('store.ts', storeTypes);
+    }
+
+    // Write original templates folder
+    const templatesFolder = srcFolder.folder('templates');
+    if (templatesFolder) {
+      templatesFolder.file('developerTemplates.tsx', developerTemplatesRaw);
+      templatesFolder.file('securityTemplates.tsx', securityTemplatesRaw);
+      templatesFolder.file('studentTemplates.tsx', studentTemplatesRaw);
+      templatesFolder.file('designerTemplates.tsx', designerTemplatesRaw);
+      templatesFolder.file('corporateTemplates.tsx', corporateTemplatesRaw);
+      templatesFolder.file('freelancerTemplates.tsx', freelancerTemplatesRaw);
+      templatesFolder.file('registry.ts', registryRaw);
+      templatesFolder.file('rendererCode.ts', rendererCodeRaw);
+    }
+
+    // Dynamic compilation of entrypoint template router
+    srcFolder.file('App.tsx', `
+import React from 'react';
+import portfolioData from './portfolioData.json';
+import { TEMPLATE_REGISTRY } from './templates/registry';
+
+export default function App() {
+  const data = portfolioData;
+  const template = TEMPLATE_REGISTRY[data.templateId] || TEMPLATE_REGISTRY['codecraft'];
+  const TemplateComponent = template.component;
+
+  return (
+    <TemplateComponent data={data} />
+  );
+}
+`);
 
     // Dynamic user customization configuration JSON
     srcFolder.file('portfolioData.json', JSON.stringify(portfolioData, null, 2));

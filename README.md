@@ -1,31 +1,49 @@
-# PortfolioForge
+# 💻 PortfolioForge:~$ cat info.txt
 
-🚀 **Live Demo**: [portfolio-forgee.vercel.app](https://portfolio-forgee.vercel.app)
+```
+  ____            _    __Alias_Forge
+ |  _ \ ___  _ __| |_ / _| ___  _ __ __ _  ___
+ | |_) / _ \| '__| __| |_ / _ \| '__/ _` |/ _ \
+ |  __/ (_) | |  | |_|  _| (_) | | | (_| |  __/
+ |_|   \___/|_|   \__|_|  \___/|_|  \__, |\___|
+                                    |___/
+```
+
+🚀 **Live Demo**: [portfolio-forgee.vercel.app](https://portfolio-forgee.vercel.app)  
+🚀 **Backend API**: [portfolio-forge-backend.onrender.com](https://portfolio-forge-backend.onrender.com)
 
 PortfolioForge is a web application that enables users to generate beautiful, production-ready portfolio websites from their resumes (PDF/DOCX) or manual details. Built using the React, Express, and Node stack, it incorporates AI-powered enhancements and provides 15 highly-polished templates across several categories.
 
 ---
 
-## 🛠️ Technology Stack
-
-### Frontend
-- **Framework**: React.js with TypeScript & Vite
-- **Styling**: TailwindCSS & Framer Motion (for sleek transitions)
-- **State Management**: Zustand
-- **Drag & Drop**: Dnd Kit (for section reordering)
-- **ZIP Generation**: JSZip (frontend client packaging)
-- **Charts**: Recharts (for health completeness metrics & admin panels)
-
-### Backend
-- **Framework**: Node.js & Express.js with TypeScript
-- **ORM**: Prisma ORM
-- **Database**: PostgreSQL (Development: Local, Production: Neon PostgreSQL)
-- **Resume Processing**: `pdf-parse` (PDF parsing) & `mammoth` (DOCX extraction)
-- **AI Integrations**: Google Gemini Free API (for resume structuring, bio improving, and project enhancement)
+```bash
+$ neofetch --project portfolioforge
+```
+```
+                .------.             OS: React, Node, Express, Prisma ORM
+              /  ~ ~   \             Database: Neon PostgreSQL & Prisma
+             |  (o) (o) |            AI Engine: Google Gemini Free API
+             |    __    |            Templates: 15+ Custom Themes
+              \  \__/  /             Build Tool: Vite + TypeScript
+               \______/              Styling: TailwindCSS & Framer Motion
+```
 
 ---
 
-## 🚀 Setup & Launch Instructions
+```bash
+$ ls -la core-features/
+```
+* 📄 **Resume-Parsing/** — Instantly structures PDF/DOCX resumes using Gemini.
+* 🎨 **15-Templates/** — Sleek styles (Developer, Cybersecurity, Student, Corporate, Freelancer).
+* 🔧 **Live-Visual-Builder/** — Split-pane workspace with live layout adjustments and color palettes.
+* 📦 **Standalone-ZIP-Export/** — Codebase bundles with all selected template components for local execution.
+* 🧭 **SEO-Engine/** — Custom page title, description, and keywords metadata.
+
+---
+
+```bash
+$ ./setup.sh --install-dependencies
+```
 
 ### 1. Prerequisites
 - **Node.js** (v18+ recommended)
@@ -49,7 +67,7 @@ npm run setup
 ### 4. Database Schema Setup
 Run migrations to initialize tables and seed default templates:
 ```bash
-# Generate Prisma client and migrate local database
+# Generate Prisma client and migrate database
 npm run db:generate
 npm run db:migrate
 ```
@@ -62,20 +80,14 @@ npm run dev
 
 ---
 
-## 📁 Project Structure
-
+```bash
+$ tree -L 2 --dirsfirst
 ```
+```
+.
 ├── backend/                  # Node + Express API + Prisma database
 │   ├── prisma/               # Schema models & seeding scripts
-│   ├── src/
-│   │   ├── controllers/      # Parsing, Auth, Portfolio CRUD operations
-│   │   ├── middleware/       # Multer uploads, JWT authentication
-│   │   ├── routes/           # Endpoint index handlers
-│   │   └── services/         # Gemini AI and parser utilities
+│   ├── src/                  # Controllers, middleware, routes, services
 ├── frontend/                 # React UI + Zustand state + visual builder
-│   ├── src/
-│   │   ├── components/       # Layouts, Emulated views, Completeness score charts
-│   │   ├── pages/            # Home, Gallery, Workspace, Dashboard panels
-│   │   ├── templates/        # 15 HTML/React portfolio styles
-│   │   └── utils/            # JSZip packager & configurations exporter
+│   ├── src/                  # Components, pages, templates, utils
 ```

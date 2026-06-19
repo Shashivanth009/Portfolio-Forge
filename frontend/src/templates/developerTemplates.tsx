@@ -752,8 +752,8 @@ export const VivePortfolio: React.FC<TemplateProps> = ({ data }) => {
               <Code size={14} /> <span>Hello World, I'm</span>
             </p>
             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1a1a1a] leading-none font-display">
-              {personalInfo.fullName ? personalInfo.fullName.split(' ')[0] : 'Jaligama'}<br />
-              <span className="vp-accent-text">{personalInfo.fullName ? personalInfo.fullName.split(' ').slice(1).join(' ') : 'Vivek'}</span>
+              {personalInfo.fullName ? personalInfo.fullName.split(' ')[0] : 'Jon'}<br />
+              <span className="vp-accent-text">{personalInfo.fullName ? personalInfo.fullName.split(' ').slice(1).join(' ') : 'Doe'}</span>
             </h1>
             
             {/* Typing effect role box */}

@@ -8,7 +8,8 @@ import { HealthScore } from '../components/HealthScore';
 import { generatePortfolioZip } from '../utils/zipGenerator';
 import { 
   Sparkles, UploadCloud, Plus, Trash2, Download, AlertCircle,
-  Github, Layout, Paintbrush, Globe, Info, Settings2, FileCode
+  Github, Layout, Paintbrush, Globe, Info, Settings2, FileCode,
+  User, Upload
 } from 'lucide-react';
 
 const asText = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
@@ -161,6 +162,39 @@ export const PortfolioBuilder: React.FC = () => {
   const showToast = (type: 'success' | 'error', text: string) => {
     setMessage({ type, text });
     setTimeout(() => setMessage(null), 5000);
+  };
+
+  // Profile Picture (Avatar) handlers
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileObj = e.target.files?.[0];
+    if (!fileObj) return;
+
+    if (fileObj.size > 2 * 1024 * 1024) {
+      showToast('error', 'Image size should be less than 2MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPortfolio({
+        personalInfo: {
+          ...portfolio.personalInfo,
+          avatarUrl: reader.result as string,
+        },
+      });
+      showToast('success', 'Profile picture uploaded successfully!');
+    };
+    reader.readAsDataURL(fileObj);
+  };
+
+  const handleRemoveAvatar = () => {
+    setPortfolio({
+      personalInfo: {
+        ...portfolio.personalInfo,
+        avatarUrl: '',
+      },
+    });
+    showToast('success', 'Profile picture removed.');
   };
 
   // 1. Resume Parser Call
@@ -411,6 +445,48 @@ export const PortfolioBuilder: React.FC = () => {
 
           {activeTab === 'details' && (
             <div className="space-y-4 text-xs">
+              {/* Profile Picture Upload Section */}
+              <div className="flex items-center space-x-6 bg-gray-950/40 p-4 border border-gray-900 rounded-xl">
+                <div className="relative group w-16 h-16 rounded-xl overflow-hidden border border-gray-800 bg-gray-900 flex items-center justify-center shrink-0">
+                  {portfolio.personalInfo.avatarUrl ? (
+                    <img src={portfolio.personalInfo.avatarUrl} className="w-full h-full object-cover" alt="Avatar Preview" />
+                  ) : (
+                    <div className="text-gray-500 flex flex-col items-center justify-center">
+                      <User size={20} />
+                      <span className="text-[8px] mt-0.5">No image</span>
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[11px] font-bold text-gray-300 block">Profile Picture</label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="file"
+                      id="avatar-upload"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="avatar-upload"
+                      className="cursor-pointer bg-gray-900 border border-gray-800 hover:bg-gray-850 hover:border-gray-700 text-white px-3 py-1.5 rounded-lg text-[11px] font-semibold flex items-center transition"
+                    >
+                      <Upload size={12} className="mr-1.5" /> Upload
+                    </label>
+                    {portfolio.personalInfo.avatarUrl && (
+                      <button
+                        type="button"
+                        onClick={handleRemoveAvatar}
+                        className="bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-400 px-3 py-1.5 rounded-lg text-[11px] font-semibold transition"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  <span className="text-[10px] text-gray-500 block">Recommended: Square format. Max 2MB.</span>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[11px] font-bold text-gray-400 block mb-1">Full Name</label>

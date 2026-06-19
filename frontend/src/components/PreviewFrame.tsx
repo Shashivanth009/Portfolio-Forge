@@ -83,6 +83,7 @@ export const PreviewFrame: React.FC<PreviewFrameProps> = ({ data }) => {
         <div 
           key={reloadKey}
           className={`bg-slate-900 shadow-2xl transition-all duration-300 overflow-y-auto ${getSizingClass()}`}
+          style={{ transform: 'translate(0, 0)', position: 'relative' }}
         >
           {/* Direct component injection for instant render refresh */}
           <ActiveComponent data={data} />

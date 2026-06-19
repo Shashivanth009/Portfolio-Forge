@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-900 text-gray-100;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-accent {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+/* Custom Background Gradients */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+}
+
+.glow-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.glow-hover:hover::after {
+  opacity: 1;
+}

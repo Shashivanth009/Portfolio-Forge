@@ -1,0 +1,67 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String      @id @default(uuid())
+  email      String      @unique
+  password   String      // Hashed with bcrypt
+  name       String
+  role       String      @default("USER") // USER, ADMIN
+  portfolios Portfolio[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Portfolio {
+  id               String   @id @default(uuid())
+  title            String
+  slug             String   @unique // URL slug for portfolio, e.g. "john-doe"
+  userId           String?
+  user             User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Structured Resume Content (stored as JSON to adapt to templates easily)
+  personalInfo     Json     // { fullName, email, phone, location, bio, avatarUrl }
+  socials          Json     // { github, linkedin, portfolio, twitter }
+  education        Json     // Array of { degree, college, year, grade }
+  experience       Json     // Array of { company, role, duration, description }
+  projects         Json     // Array of { title, description, technologies, githubLink, liveLink }
+  skills           Json     // Array of { name, category: "technical" | "soft", level: 1-5 }
+  certifications   Json     // Array of { name, issuer, date, url }
+  achievements     Json     // Array of { title, description, date }
+  
+  // Design & Layout Configuration
+  templateId       String   // e.g. "codecraft"
+  themeConfig      Json     // { primaryColor, secondaryColor, accentColor, backgroundColor, fontFamily, borderRadius }
+  sectionsOrder    Json     // Array of section names: ["hero", "about", "skills", "projects", "experience", "contact"]
+  
+  // SEO Configuration
+  seoConfig        Json     // { metaTitle, metaDescription, keywords: [] }
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Template {
+  id          String   @id
+  name        String
+  category    String   // DEVELOPER, CYBERSECURITY, STUDENT, DESIGNER, CORPORATE, FREELANCER
+  style       String   // MINIMAL, MODERN, DARK, LIGHT, PREMIUM
+  description String
+  previewImg  String   // Base64 or URL placeholder
+  usageCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model AnalyticsLog {
+  id        String   @id @default(uuid())
+  action    String   // GENERATE, DOWNLOAD, VIEW
+  templateId String?
+  metadata  Json?    // OS, Browser, etc.
+  timestamp DateTime @default(now())
+}

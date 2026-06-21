@@ -17,11 +17,6 @@ export const LandingPage: React.FC = () => {
     { icon: <Smartphone className="text-sky-400" size={24} />, title: 'Fully Responsive', desc: 'Optimised layouts catering to mobile, tablet, and widescreen viewport sizes.' },
   ];
 
-  const testimonials = [
-    { quote: "PortfolioForge saved me hours. I uploaded my B.Tech resume, chose CodeCraft, and deployed it to Vercel in 5 minutes!", author: "Rohan Sharma", role: "Software Engineer Grad" },
-    { quote: "The cybersecurity templates are incredible. The terminal simulation perfectly shows off my OSCP certificate and penetration projects.", author: "Sarah Jenkins", role: "SOC Analyst" },
-    { quote: "No locked subscriptions. Just clean, raw React source code. This is what developers have been looking for.", author: "Marc Dubois", role: "Full Stack Engineer" },
-  ];
 
   const faqs = [
     { q: "Is this service really free?", a: "Yes, PortfolioForge is built entirely on open-source libraries and free-tier integrations like Gemini Free API. There are no paid subscriptions or lock-ins." },
@@ -112,25 +107,6 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="max-w-6xl mx-auto px-6 py-20 border-t border-gray-900 bg-gray-950/10">
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white">Loved by Students and Devs</h2>
-          <p className="text-sm text-gray-400">Read reviews from students and engineers who launched portfolios using PortfolioForge.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((test, i) => (
-            <div key={i} className="p-8 rounded-2xl border border-gray-800 bg-gray-950/30 flex flex-col justify-between">
-              <p className="text-xs text-gray-300 italic leading-relaxed">"{test.quote}"</p>
-              <div className="mt-6 pt-4 border-t border-gray-900 flex justify-between items-center">
-                <span className="font-bold text-xs text-white">{test.author}</span>
-                <span className="text-[10px] text-amber-400 font-semibold">{test.role}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* FAQs */}
       <section className="max-w-4xl mx-auto px-6 py-20 border-t border-gray-900">

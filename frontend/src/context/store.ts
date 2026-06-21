@@ -57,6 +57,19 @@ export interface Achievement {
   date: string;
 }
 
+export interface AiSuggestions {
+  templateId: string;
+  themeConfig: {
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    backgroundColor: string;
+    fontFamily: string;
+    borderRadius: string;
+  };
+  reason: string;
+}
+
 export interface ThemeConfig {
   primaryColor: string;
   secondaryColor: string;
@@ -64,6 +77,7 @@ export interface ThemeConfig {
   backgroundColor: string;
   fontFamily: string;
   borderRadius: string;
+  aiSuggestions?: AiSuggestions;
 }
 
 export interface SeoConfig {

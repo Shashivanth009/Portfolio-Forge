@@ -6,6 +6,7 @@ import { PreviewFrame } from '../components/PreviewFrame';
 import { DragDropSections } from '../components/DragDropSections';
 import { HealthScore } from '../components/HealthScore';
 import { generatePortfolioZip } from '../utils/zipGenerator';
+import { TEMPLATE_REGISTRY } from '../templates/registry';
 import { 
   Sparkles, UploadCloud, Plus, Trash2, Download, AlertCircle,
   Github, Layout, Paintbrush, Globe, Info, Settings2, FileCode,
@@ -123,8 +124,21 @@ const normalizeParsedPortfolio = (parsedData: any, current: PortfolioData): Part
     projects,
     skills,
     certifications,
-    achievements,
-    themeConfig: current.themeConfig,
+    themeConfig: {
+      ...current.themeConfig,
+      aiSuggestions: parsedData?.suggestedTemplateId && parsedData?.suggestedThemeConfig ? {
+        templateId: parsedData.suggestedTemplateId,
+        themeConfig: {
+          primaryColor: parsedData.suggestedThemeConfig.primaryColor || '#3b82f6',
+          secondaryColor: parsedData.suggestedThemeConfig.secondaryColor || '#10b981',
+          accentColor: parsedData.suggestedThemeConfig.accentColor || '#fbbf24',
+          backgroundColor: parsedData.suggestedThemeConfig.backgroundColor || '#0f172a',
+          fontFamily: parsedData.suggestedThemeConfig.fontFamily || 'sans',
+          borderRadius: parsedData.suggestedThemeConfig.borderRadius || '8px',
+        },
+        reason: parsedData.suggestedExplanation || 'Based on your professional profile.'
+      } : current.themeConfig.aiSuggestions,
+    },
     sectionsOrder: current.sectionsOrder,
     seoConfig: {
       metaTitle: personalInfo.fullName ? `${personalInfo.fullName} - Portfolio` : current.seoConfig.metaTitle,
@@ -215,7 +229,11 @@ export const PortfolioBuilder: React.FC = () => {
       if (parsedData) {
         const normalizedPortfolio = normalizeParsedPortfolio(parsedData, portfolio);
         setPortfolio(normalizedPortfolio);
-        showToast('success', `Resume parsed! Found ${normalizedPortfolio.skills?.length || 0} skills, ${normalizedPortfolio.projects?.length || 0} projects, ${normalizedPortfolio.experience?.length || 0} jobs.`);
+        if (normalizedPortfolio.themeConfig?.aiSuggestions) {
+          showToast('success', `Resume parsed successfully! Gemini has suggested a custom template and color scheme based on your resume context. Check the "Theme & Layout" tab.`);
+        } else {
+          showToast('success', `Resume parsed! Found ${normalizedPortfolio.skills?.length || 0} skills, ${normalizedPortfolio.projects?.length || 0} projects, ${normalizedPortfolio.experience?.length || 0} jobs.`);
+        }
         setActiveTab('details');
       } else {
         throw new Error('Empty response from server');

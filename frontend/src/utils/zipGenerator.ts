@@ -70,6 +70,19 @@ export interface Achievement {
   date: string;
 }
 
+export interface AiSuggestions {
+  templateId: string;
+  themeConfig: {
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    backgroundColor: string;
+    fontFamily: string;
+    borderRadius: string;
+  };
+  reason: string;
+}
+
 export interface ThemeConfig {
   primaryColor: string;
   secondaryColor: string;
@@ -77,6 +90,7 @@ export interface ThemeConfig {
   backgroundColor: string;
   fontFamily: string;
   borderRadius: string;
+  aiSuggestions?: AiSuggestions;
 }
 
 export interface SeoConfig {
@@ -121,19 +135,19 @@ export async function generatePortfolioZip(portfolioData: PortfolioData): Promis
       preview: 'vite preview'
     },
     dependencies: {
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
+      react: '^18.3.1',
+      'react-dom': '^18.3.1',
       'lucide-react': '^0.331.0'
     },
     devDependencies: {
-      '@types/react': '^18.2.56',
-      '@types/react-dom': '^18.2.19',
-      '@vitejs/plugin-react': '^4.2.1',
-      autoprefixer: '^10.4.17',
-      postcss: '^8.4.35',
-      tailwindcss: '^3.4.1',
-      typescript: '^5.2.2',
-      vite: '^5.1.3'
+      '@types/react': '^18.3.12',
+      '@types/react-dom': '^18.3.1',
+      '@vitejs/plugin-react': '^4.3.4',
+      autoprefixer: '^10.4.20',
+      postcss: '^8.4.49',
+      tailwindcss: '^3.4.17',
+      typescript: '^5.6.2',
+      vite: '^5.4.21'
     }
   }, null, 2));
 

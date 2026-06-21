@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const MODEL_NAME = 'gemini-1.5-flash';
+const MODEL_NAME = 'gemini-2.5-flash';
 
 function getApiKey(): string {
   return process.env.GEMINI_API_KEY || '';
@@ -57,7 +57,17 @@ JSON structure to return:
   ],
   "achievements": [
     { "title": "achievement", "description": "details", "date": "" }
-  ]
+  ],
+  "suggestedTemplateId": "one of: codecraft, devhub, stackfolio, viveportfolio, redteam, terminal, matrix, campus, freshgrad, aurora, neo, executive, enterprise, freelancerpro, creativestudio, consultant",
+  "suggestedThemeConfig": {
+    "primaryColor": "hex color matching profile style",
+    "secondaryColor": "hex color matching profile style",
+    "accentColor": "hex color matching profile style",
+    "backgroundColor": "hex color matching profile style",
+    "fontFamily": "one of: sans, mono, display",
+    "borderRadius": "one of: 0px, 4px, 8px, 16px"
+  },
+  "suggestedExplanation": "1-2 sentence explanation of why this layout style, colors, and font matches the operator's professional field and experience."
 }
 
 Resume text to parse:
@@ -110,7 +120,11 @@ export async function improveBio(bio: string, targetRole: string): Promise<strin
           {
             parts: [
               {
-                text: `Improve the following bio summary for a portfolio website targeting the role of "${targetRole}". Keep it professional, engaging, and under 3 sentences. Output only the improved text. No markdown, no quotes.\n\nOriginal Bio: ${bio}`,
+                text: `Improve the following bio summary for a portfolio website targeting the role of "${targetRole}". Keep it professional, engaging, and under 3 sentences.
+
+CRITICAL RULE: Return ONLY the final improved bio text as a raw string. Do NOT provide any options, suggestions, markdown, explanations, formatting, greeting, or wrapper quotes. The output must be directly usable as the bio.
+
+Original Bio: ${bio}`,
               },
             ],
           },
@@ -141,7 +155,11 @@ export async function enhanceProjectDescription(title: string, desc: string, tec
           {
             parts: [
               {
-                text: `Enhance the following project description for a professional web portfolio. Make it brief (2-3 sentences) and action-oriented. Project title: "${title}". Technologies used: ${tech.join(', ')}. Original Description: ${desc}. Output only the enhanced description, no prefix or extra formatting.`,
+                text: `Enhance the following project description for a professional web portfolio. Make it brief (2-3 sentences) and action-oriented. Project title: "${title}". Technologies used: ${tech.join(', ')}.
+
+CRITICAL RULE: Return ONLY the final enhanced project description as a raw string. Do NOT provide any options, suggestions, markdown, explanations, formatting, greeting, or wrapper quotes. The output must be directly usable as the project description.
+
+Original Description: ${desc}`,
               },
             ],
           },
